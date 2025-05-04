@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO registerUser(SignUpRequestDTO signUpRequest) {
         // 1. Check if the email already exists
         if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("Email already registered: " + signUpRequest.getEmail());
+            throw new UserAlreadyExistsException("El correo ya registrado: " + signUpRequest.getEmail());
         }
 
         // 2. Create the User entity

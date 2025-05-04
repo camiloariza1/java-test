@@ -1,4 +1,3 @@
-// src/test/java/com/tuorganizacion/usermanagementservice/service/UserServiceImplTest.java
 package com.global.logic.service;
 
 import com.global.logic.dtos.PhoneDTO;
@@ -28,10 +27,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // Habilita Mockito para JUnit 5
+@ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
-    @Mock // Crea un mock de esta dependencia
+    @Mock
     private UserRepository userRepository;
 
     @Mock
@@ -40,7 +39,7 @@ class UserServiceImplTest {
     @Mock
     private JwtTokenProvider jwtTokenProvider;
 
-    @InjectMocks // Crea una instancia de UserServiceImpl e inyecta los mocks (@Mock) en ella
+    @InjectMocks
     private UserServiceImpl userService;
 
     private SignUpRequestDTO signUpRequest;
@@ -49,7 +48,6 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Configurar datos de prueba reutilizables
         signUpRequest = new SignUpRequestDTO();
         signUpRequest.setName("Juan Perez");
         signUpRequest.setEmail("juan.perez@example.com");
@@ -69,7 +67,6 @@ class UserServiceImplTest {
         user.setCreated(LocalDateTime.now());
         user.setLastLogin(user.getCreated());
         user.setPhones(Collections.emptyList());
-        // No establecer ID aquí, se hace en los tests individuales si es necesario
 
         fakeToken = "fake.jwt.token";
     }
@@ -77,7 +74,6 @@ class UserServiceImplTest {
     @Test
     @DisplayName("Registro exitoso de usuario")
     void registerUser_Success() {
-        // Arrange
         when(userRepository.findByEmail(signUpRequest.getEmail())).thenReturn(Optional.empty());
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPass");
         when(jwtTokenProvider.generateToken(anyString())).thenReturn(fakeToken);
@@ -94,11 +90,9 @@ class UserServiceImplTest {
                     return phone;
                 })
                 .collect(Collectors.toList()));
-        // No establecer ID aquí, simula que aún no está guardado
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User userArg = invocation.getArgument(0);
-            // Simula la generación de ID y fechas
-            userArg.setId(UUID.randomUUID()); // Simulate ID assignment
+            userArg.setId(UUID.randomUUID());
             userArg.setCreated(LocalDateTime.now());
             userArg.setLastLogin(userArg.getCreated());
             userArg.setActive(true);
